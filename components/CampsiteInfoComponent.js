@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList, Modal, Button, StyleSheet, Alert, PanResponder } from 'react-native';
+import { Text, View, ScrollView, FlatList, Modal, Button, StyleSheet, Alert, PanResponder, Share } from 'react-native';
 import { Card, Icon, Rating, Input } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
@@ -30,6 +30,16 @@ function RenderCampsite(props) {
     const recognizeDrag = ({dx}) => (dx < -200) ? true : false;
 
     const recognizeComment = ({dx}) => (dx > 200) ? true : false;
+
+    const shareCampsite = (title, message, url) => {
+        Share.share({
+            title,
+            message: `${title}: ${message} ${url}`,
+            url: url
+        },{
+            dialogTitle: 'Share ' + title
+        });
+    };
 
 const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -79,7 +89,7 @@ const panResponder = PanResponder.create({
                         <Icon
                             name={props.favorite ? 'heart' : 'heart-o'}
                             type='font-awesome'
-                            color='#f50'
+                            color='red'
                             raised
                             reverse
                             onPress={() => props.favorite ? 
@@ -88,11 +98,19 @@ const panResponder = PanResponder.create({
                         <Icon
                             name='pencil'
                             type='font-awesome'
-                            color='#5637DD'
+                            color='blue'
                             raised
                             reverse
                             onPress={() => props.onShowModal()}
                             />
+                        <Icon
+                            name={'share'}
+                            type='font-awesome'
+                            color= 'green'
+                            raised
+                            reverse
+                            onPress={() => shareCampsite(campsite.name, campsite.description, baseUrl + campsite.image)} 
+                        />
                     </View>
                 </Card>
             </Animatable.View>
