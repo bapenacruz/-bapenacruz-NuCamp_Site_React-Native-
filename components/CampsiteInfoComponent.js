@@ -44,7 +44,7 @@ function RenderCampsite(props) {
 const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderGrant: () => {
-        view.current.flash(5000)
+        view.current.rubberBand(1000)
         .then(endState => console.log(endState.finished ? 'finished' : 'canceled'));
     },
     onPanResponderEnd: (e, gestureState) => {
